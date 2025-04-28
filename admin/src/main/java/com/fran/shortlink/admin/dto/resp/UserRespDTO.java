@@ -1,20 +1,19 @@
 package com.fran.shortlink.admin.dto.resp;
 
-import java.util.Date;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fran.shortlink.admin.common.serialize.PhoneDesensitizationSerializer;
 import lombok.Data;
 
 /**
- * User response entity
+ * User Response Entity w/ Desensitized Info
  */
 @Data
 public class UserRespDTO {
- private Long id;
+
+    private Long id;
     private String username;
     private String realName;
+    @JsonSerialize(using = PhoneDesensitizationSerializer.class)
     private String phone;
     private String email;
-    private Long deletionTime;
-    private Date createTime;
-    private Date updateTime;
-    private Integer delFlag;
 }

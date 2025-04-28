@@ -1,8 +1,10 @@
 package com.fran.shortlink.admin.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.fran.shortlink.admin.common.convention.result.Result;
 import com.fran.shortlink.admin.common.convention.result.Results;
 import com.fran.shortlink.admin.common.enums.UserErrorCodeEnum;
+import com.fran.shortlink.admin.dto.resp.UserActualRespDTO;
 import com.fran.shortlink.admin.dto.resp.UserRespDTO;
 import com.fran.shortlink.admin.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +21,10 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/api/shortlink/v1/user/{username}")
+    /**
+     * Get user by username with sensitive info
+     */
+    @GetMapping("/api/short-link/v1/user/{username}")
     public Result<UserRespDTO> getUserByUsername(@PathVariable("username") String username) {
         UserRespDTO result = userService.getUserByUsername(username);
         if (result == null) {
@@ -28,5 +33,15 @@ public class UserController {
         } else {
             return Results.success(result);
         }
+    }
+
+    /**
+     * Get user by username with actual info
+     */
+    @GetMapping("/api/short-link/v1/actual/user/{username}")
+    public Result<UserActualRespDTO> getActualUserByUsername(
+        @PathVariable("username") String username) {
+        return Results.success(
+            BeanUtil.toBean(userService.getUserByUsername(username), UserActualRespDTO.class));
     }
 }
