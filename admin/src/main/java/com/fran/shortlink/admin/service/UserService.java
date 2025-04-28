@@ -5,7 +5,7 @@ import com.fran.shortlink.admin.dao.entity.UserDO;
 import com.fran.shortlink.admin.dto.resp.UserRespDTO;
 
 /**
- * User interface
+ * User Interface
  */
 public interface UserService extends IService<UserDO> {
 
@@ -15,4 +15,11 @@ public interface UserService extends IService<UserDO> {
      * @return user response entity
      */
     UserRespDTO getUserByUsername(String username);
+
+    /**
+     * Check if a username existed or not
+     * @param username username to search
+     * @return true if existed, false otherwise
+     */
+    Boolean hasUsername(String username);
 }
