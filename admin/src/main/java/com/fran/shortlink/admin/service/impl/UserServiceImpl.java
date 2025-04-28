@@ -9,6 +9,8 @@ import com.fran.shortlink.admin.dao.entity.UserDO;
 import com.fran.shortlink.admin.dao.mapper.UserMapper;
 import com.fran.shortlink.admin.dto.resp.UserRespDTO;
 import com.fran.shortlink.admin.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.redisson.api.RBloomFilter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +18,10 @@ import org.springframework.stereotype.Service;
  * User interface implementation
  */
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements UserService {
+
+    private final RBloomFilter<String> userRegisterCachePenetrationBloomFilter;
 
     /**
      * Get user info based on username
@@ -40,9 +45,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
 
     @Override
     public Boolean hasUsername(String username) {
-        LambdaQueryWrapper<UserDO> queryWrapper = Wrappers.lambdaQuery(UserDO.class)
-            .eq(UserDO::getUsername, username);
-        UserDO userDO = baseMapper.selectOne(queryWrapper);
-        return userDO == null;
+        return userRegisterCachePenetrationBloomFilter.contains(username);
     }
 }
