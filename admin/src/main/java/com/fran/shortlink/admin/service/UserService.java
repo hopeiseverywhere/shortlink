@@ -54,8 +54,15 @@ public interface UserService extends IService<UserDO> {
     /**
      * Check if the user has logged in or not
      * @param username username
-     * @param token user log in token
+     * @param token user login token
      * @return true if logged in, false otherwise
      */
     Boolean checkLogin(String username, String token);
+
+    /**
+     * Log out user
+     * @param username username
+     * @param token user login token
+     */
+    void logout(String username, String token);
 }

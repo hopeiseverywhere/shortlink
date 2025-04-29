@@ -12,6 +12,7 @@ import com.fran.shortlink.admin.dto.resp.UserLoginRespDTO;
 import com.fran.shortlink.admin.dto.resp.UserRespDTO;
 import com.fran.shortlink.admin.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -91,10 +92,20 @@ public class UserController {
     /**
      * Check if the user has logged in or not
      */
-    @GetMapping("/api/short-link/admin/v1/user/login")
+    @GetMapping("/api/short-link/admin/v1/user/check-login")
     public Result<Boolean> checkLogin(@RequestParam("username") String username,
         @RequestParam("token") String token) {
         Boolean result = userService.checkLogin(username, token);
         return Results.success(result);
+    }
+
+    /**
+     * User logout
+     */
+    @DeleteMapping("/api/short-link/admin/v1/user/logout")
+    public Result<Void> logout(@RequestParam("username") String username,
+        @RequestParam("token") String token) {
+        userService.logout(username, token);
+        return Results.success();
     }
 }
