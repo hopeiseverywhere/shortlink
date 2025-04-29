@@ -3,10 +3,10 @@ package com.fran.shortlink.admin.dto.req;
 import lombok.Data;
 
 /**
- * User Registration Request DTO
+ * User Update Request DTO
  */
 @Data
-public class UserRegisterReqDTO {
+public class UserUpdateReqDTO {
 
     private String username;
     private String password;

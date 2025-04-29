@@ -4,6 +4,7 @@ import static com.fran.shortlink.admin.common.constant.RedisCacheConstant.LOCK_U
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fran.shortlink.admin.common.convention.exception.ClientException;
@@ -11,6 +12,7 @@ import com.fran.shortlink.admin.common.enums.UserErrorCodeEnum;
 import com.fran.shortlink.admin.dao.entity.UserDO;
 import com.fran.shortlink.admin.dao.mapper.UserMapper;
 import com.fran.shortlink.admin.dto.req.UserRegisterReqDTO;
+import com.fran.shortlink.admin.dto.req.UserUpdateReqDTO;
 import com.fran.shortlink.admin.dto.resp.UserRespDTO;
 import com.fran.shortlink.admin.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -58,7 +60,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     }
 
     @Override
-    public void register(UserRegisterReqDTO requestParam) {
+    public void registerUser(UserRegisterReqDTO requestParam) {
         if (hasUsername(requestParam.getUsername())) {
             throw new ClientException(UserErrorCodeEnum.USER_EXIST);
         }
@@ -78,6 +80,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         } finally {
             lock.unlock();
         }
-
     }
+
+    @Override
+    public void updateUser(UserUpdateReqDTO requestParam) {
+        // TODO check if the current username has logged in
+        LambdaUpdateWrapper<UserDO> updateWrapper = Wrappers.lambdaUpdate(UserDO.class)
+                .eq(UserDO::getUsername, requestParam.getUsername());
+        baseMapper.update(BeanUtil.toBean(requestParam, UserDO.class), updateWrapper);
+    }
+
 }

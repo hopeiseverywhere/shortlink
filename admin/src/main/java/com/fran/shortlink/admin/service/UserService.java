@@ -3,6 +3,7 @@ package com.fran.shortlink.admin.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fran.shortlink.admin.dao.entity.UserDO;
 import com.fran.shortlink.admin.dto.req.UserRegisterReqDTO;
+import com.fran.shortlink.admin.dto.req.UserUpdateReqDTO;
 import com.fran.shortlink.admin.dto.resp.UserRespDTO;
 
 /**
@@ -28,5 +29,11 @@ public interface UserService extends IService<UserDO> {
      * Register user
      * @param requestParam user registration request params
      */
-    void register(UserRegisterReqDTO requestParam);
+    void registerUser(UserRegisterReqDTO requestParam);
+
+    /**
+     * Update user based on username
+     * @param requestParam user update request params
+     */
+    void updateUser(UserUpdateReqDTO requestParam);
 }
