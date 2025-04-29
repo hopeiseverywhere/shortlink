@@ -4,9 +4,11 @@ import cn.hutool.core.bean.BeanUtil;
 import com.fran.shortlink.admin.common.convention.result.Result;
 import com.fran.shortlink.admin.common.convention.result.Results;
 import com.fran.shortlink.admin.common.enums.UserErrorCodeEnum;
+import com.fran.shortlink.admin.dto.req.UserLoginReqDTO;
 import com.fran.shortlink.admin.dto.req.UserRegisterReqDTO;
 import com.fran.shortlink.admin.dto.req.UserUpdateReqDTO;
 import com.fran.shortlink.admin.dto.resp.UserActualRespDTO;
+import com.fran.shortlink.admin.dto.resp.UserLoginRespDTO;
 import com.fran.shortlink.admin.dto.resp.UserRespDTO;
 import com.fran.shortlink.admin.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -75,5 +77,24 @@ public class UserController {
     public Result<Void> updateUser(@RequestBody UserUpdateReqDTO requestParam) {
         userService.updateUser(requestParam);
         return Results.success();
+    }
+
+    /**
+     * User login
+     */
+    @PostMapping("/api/short-link/admin/v1/user/login")
+    public Result<UserLoginRespDTO> login(@RequestBody UserLoginReqDTO requestParam) {
+        UserLoginRespDTO result = userService.login(requestParam);
+        return Results.success(result);
+    }
+
+    /**
+     * Check if the user has logged in or not
+     */
+    @GetMapping("/api/short-link/admin/v1/user/login")
+    public Result<Boolean> checkLogin(@RequestParam("username") String username,
+        @RequestParam("token") String token) {
+        Boolean result = userService.checkLogin(username, token);
+        return Results.success(result);
     }
 }
