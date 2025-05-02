@@ -41,8 +41,8 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
         // TODO get username from request
         LambdaQueryWrapper<GroupDO> queryWrapper = Wrappers.lambdaQuery(GroupDO.class)
             .eq(GroupDO::getDelFlag, 0)
-            .eq(GroupDO::getUsername, null)
-            .orderByDesc(GroupDO::getSortOrder, GroupDO::getUpdateTime);
+            .isNull(GroupDO::getUsername)
+            .orderByDesc(List.of(GroupDO::getSortOrder, GroupDO::getUpdateTime));
         List<GroupDO> groupDOList = baseMapper.selectList(queryWrapper);
         return BeanUtil.copyToList(groupDOList, ShortLinkGroupRespDTO.class);
     }
