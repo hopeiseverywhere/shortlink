@@ -1,7 +1,7 @@
 package com.fran.shortlink.admin.dao.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.util.Date;
+import com.fran.shortlink.admin.common.database.BaseDO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GroupDO {
+public class GroupDO extends BaseDO {
 
     /**
      * id
@@ -42,10 +42,5 @@ public class GroupDO {
      */
     private Integer sortOrder;
 
-    private Date createTime;
-    private Date updateTime;
-    /**
-     * Deletion flag 0: not deleted 1: deleted
-     */
-    private Integer delFlag;
+
 }

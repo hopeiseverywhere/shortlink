@@ -8,4 +8,9 @@ import com.fran.shortlink.admin.dao.entity.GroupDO;
  */
 public interface GroupService extends IService<GroupDO> {
 
+    /**
+     * Create a new short link group name
+     * @param groupName the new group name
+     */
+    void saveGroup(String groupName);
 }
