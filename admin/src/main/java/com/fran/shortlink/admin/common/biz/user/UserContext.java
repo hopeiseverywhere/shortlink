@@ -6,7 +6,7 @@ import java.util.Optional;
 /**
  * User Context Utility Class
  */
-public class UserContext {
+public final class UserContext {
 
     // Use TransmittableThreadLocal to store user info and support thread transmission
     private static final ThreadLocal<UserInfoDTO> USER_THREAD_LOCAL = new TransmittableThreadLocal<>();

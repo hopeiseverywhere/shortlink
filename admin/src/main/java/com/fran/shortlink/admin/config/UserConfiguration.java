@@ -21,6 +21,7 @@ public class UserConfiguration {
         FilterRegistrationBean<UserTransmitFilter> registration = new FilterRegistrationBean<>();
         registration.setFilter(new UserTransmitFilter(stringRedisTemplate));
         registration.addUrlPatterns("/*"); // Apply to all URL patterns
+        //registration.addInitParameter("Login", "/api/short-link/admin/v1/user/login");
         registration.setOrder(0); // Set filter execution order
         return registration;
     }
