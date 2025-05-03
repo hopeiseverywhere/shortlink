@@ -3,6 +3,7 @@ package com.fran.shortlink.admin.controller;
 import com.fran.shortlink.admin.common.convention.result.Result;
 import com.fran.shortlink.admin.common.convention.result.Results;
 import com.fran.shortlink.admin.dto.req.ShortLinkGroupSaveReqDTO;
+import com.fran.shortlink.admin.dto.req.ShortLinkGroupSortReqDTO;
 import com.fran.shortlink.admin.dto.req.ShortLinkGroupUpdateReqDTO;
 import com.fran.shortlink.admin.dto.resp.ShortLinkGroupRespDTO;
 import com.fran.shortlink.admin.service.GroupService;
@@ -57,6 +58,15 @@ public class GroupController {
     @DeleteMapping("/api/short-link/v1/group/")
     public Result<Void> deleteGroup(@RequestParam String gid) {
         groupService.deleteGroup(gid);
+        return Results.success();
+    }
+
+    /**
+     * Delete short link group name
+     */
+    @PostMapping("/api/short-link/v1/group/sort")
+    public Result<Void> sortGroup(@RequestBody List<ShortLinkGroupSortReqDTO> requestParam) {
+        groupService.sortGroup(requestParam);
         return Results.success();
     }
 }
