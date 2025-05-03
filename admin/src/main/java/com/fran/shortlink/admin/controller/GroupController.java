@@ -8,10 +8,12 @@ import com.fran.shortlink.admin.dto.resp.ShortLinkGroupRespDTO;
 import com.fran.shortlink.admin.service.GroupService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -46,6 +48,15 @@ public class GroupController {
     @PutMapping("/api/short-link/v1/group/")
     public Result<Void> updateGroup(@RequestBody ShortLinkGroupUpdateReqDTO requestParam) {
         groupService.updateGroup(requestParam);
+        return Results.success();
+    }
+
+    /**
+     * Delete short link group name
+     */
+    @DeleteMapping("/api/short-link/v1/group/")
+    public Result<Void> deleteGroup(@RequestParam String gid) {
+        groupService.deleteGroup(gid);
         return Results.success();
     }
 }
