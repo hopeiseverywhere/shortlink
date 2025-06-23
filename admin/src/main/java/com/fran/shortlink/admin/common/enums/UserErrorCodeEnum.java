@@ -6,6 +6,9 @@ import com.fran.shortlink.admin.common.convention.errorcode.IErrorCode;
  * User error code
  */
 public enum UserErrorCodeEnum implements IErrorCode {
+
+    USER_TOKEN_FAIL("A000200", "User token validation failed"),
+
     USER_NULL("B000200", "User record does not exist"),
 
     USER_NAME_EXIST("B000201", "Username already exists"),
