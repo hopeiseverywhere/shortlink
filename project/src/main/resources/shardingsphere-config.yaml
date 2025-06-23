@@ -1,0 +1,35 @@
+dataSources:
+    ds_0:
+        dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+        driverClassName: com.mysql.cj.jdbc.Driver
+        jdbcUrl: jdbc:mysql://127.0.0.1:3306/shortlink_db?useUnicode=true&characterEncoding=UTF-8&rewriteBatchedStatements=true&allowMultiQueries=true
+        username: root
+        password: rootpass
+
+rules:
+    - !SHARDING
+        tables:
+            t_link:
+                # Actual data nodes, meaning the real database sources and the actual tables inside the databases
+                actualDataNodes: ds_0.t_link_${0..15}
+                # Table sharding strategy
+                tableStrategy:
+                    # Standard sharding scenario using a single sharding key
+                    standard:
+                        # Sharding key
+                        shardingColumn: gid
+                        # Sharding algorithm, corresponds to rules[0].shardingAlgorithms
+                        shardingAlgorithmName: link_table_hash_mod
+        # Sharding algorithms
+        shardingAlgorithms:
+            # Sharding algorithm for the user table
+            link_table_hash_mod:
+                # Shard based on the hash value of the sharding key
+                type: HASH_MOD
+                # Number of shards
+                props:
+                    sharding-count: 16
+
+# Show both logical SQL and actual SQL
+props:
+    sql-show: true
