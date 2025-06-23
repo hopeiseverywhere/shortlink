@@ -1,5 +1,6 @@
 package com.fran.shortlink.project.dto.req;
 
+import java.util.Date;
 import lombok.Data;
 
 /**
@@ -25,5 +26,9 @@ public class ShortLinkCreateReqDTO {
      * Validity Type: 0 = Permanent, 1 = Custom
      */
     private Integer validDateType;
+    /**
+     * Expiration Date
+     */
+    private Date validDate;
     private String description;
 }
