@@ -8,21 +8,21 @@ import java.util.Optional;
 /**
  * Server side exception
  */
-public class ServerException extends AbstractException {
+public class ServiceException extends AbstractException {
 
-    public ServerException(String message) {
+    public ServiceException(String message) {
         this(message, null, BaseErrorCode.SERVICE_ERROR);
     }
 
-    public ServerException(IErrorCode errorCode) {
+    public ServiceException(IErrorCode errorCode) {
         this(null, errorCode);
     }
 
-    public ServerException(String message, IErrorCode errorCode) {
+    public ServiceException(String message, IErrorCode errorCode) {
         this(message, null, errorCode);
     }
 
-    public ServerException(String message, Throwable throwable, IErrorCode errorCode) {
+    public ServiceException(String message, Throwable throwable, IErrorCode errorCode) {
         super(Optional.ofNullable(message).orElse(errorCode.message()), throwable, errorCode);
     }
 
