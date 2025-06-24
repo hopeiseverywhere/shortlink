@@ -1,5 +1,6 @@
 package com.fran.shortlink.project.dto.resp;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 import lombok.Data;
 
@@ -30,11 +31,18 @@ public class ShortLinkPageRespDTO {
     /**
      * Validity Type: 0 = Permanent, 1 = Custom
      */
+
     private Integer validDateType;
     /**
      * Expiration Date
      */
+    @JsonFormat(pattern = "MM-dd-yyyy hh:mm:ss a", timezone = "PST")
     private Date validDate;
+    /**
+     * Creation Time
+     */
 
+    @JsonFormat(pattern = "MM-dd-yyyy hh:mm:ss a", timezone = "PST")
+    private Date createTime;
 
 }
