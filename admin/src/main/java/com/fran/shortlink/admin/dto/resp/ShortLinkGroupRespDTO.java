@@ -19,11 +19,6 @@ public class ShortLinkGroupRespDTO {
     private String name;
 
     /**
-     * Username of Group Creator
-     */
-    private String username;
-
-    /**
      * Group Sort Order
      */
     private Integer sortOrder;
