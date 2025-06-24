@@ -17,6 +17,7 @@ import com.fran.shortlink.admin.dto.req.UserRegisterReqDTO;
 import com.fran.shortlink.admin.dto.req.UserUpdateReqDTO;
 import com.fran.shortlink.admin.dto.resp.UserLoginRespDTO;
 import com.fran.shortlink.admin.dto.resp.UserRespDTO;
+import com.fran.shortlink.admin.service.GroupService;
 import com.fran.shortlink.admin.service.UserService;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -39,6 +40,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     private final RBloomFilter<String> userRegisterCachePenetrationBloomFilter;
     private final RedissonClient redissonClient;
     private final StringRedisTemplate stringRedisTemplate;
+    private final GroupService groupService;
 
     /**
      * Get user info based on username
@@ -89,6 +91,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
                 }
 
                 userRegisterCachePenetrationBloomFilter.add(requestParam.getUsername());
+                groupService.saveGroup("Default Group");
                 return;
             }
             throw new ClientException(UserErrorCodeEnum.USER_NAME_EXIST);
