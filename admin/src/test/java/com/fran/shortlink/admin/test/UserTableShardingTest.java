@@ -10,6 +10,7 @@ public class UserTableShardingTest {
         + "  `origin_url` varchar(1024) DEFAULT NULL COMMENT 'Original URL',\n"
         + "  `click_count` int(11) DEFAULT 0 COMMENT 'Click Count',\n"
         + "  `gid` varchar(32) DEFAULT NULL COMMENT 'Group Identifier',\n"
+        + "  `favicon` varchar(256) DEFAULT NULL COMMENT 'Web Icon',\n"
         + "  `enable_status` tinyint(1) DEFAULT NULL COMMENT 'Enable Status: 0 = Disabled, 1 = Enabled',\n"
         + "  `created_type` tinyint(1) DEFAULT NULL COMMENT 'Creation Type: 0 = Console, 1 = API',\n"
         + "  `valid_date_type` tinyint(1) DEFAULT NULL COMMENT 'Validity Type: 0 = Permanent, 1 = Custom',\n"
@@ -20,7 +21,7 @@ public class UserTableShardingTest {
         + "  `del_flag` tinyint(1) DEFAULT NULL COMMENT 'Deletion Flag: 0 = Not Deleted, 1 = Deleted',\n"
         + "  PRIMARY KEY (`id`),\n"
         + "  UNIQUE KEY `idx_unique_full_short_uri` (`full_short_url`) USING BTREE\n"
-        + ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n;";
+        + ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
 
     public static void main(String[] args) {
         for (int i = 0; i < 16; i++) {

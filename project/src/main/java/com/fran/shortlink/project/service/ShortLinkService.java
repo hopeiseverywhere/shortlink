@@ -1,9 +1,12 @@
 package com.fran.shortlink.project.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fran.shortlink.project.dao.entity.ShortLinkDO;
 import com.fran.shortlink.project.dto.req.ShortLinkCreateReqDTO;
+import com.fran.shortlink.project.dto.req.ShortLinkPageReqDTO;
 import com.fran.shortlink.project.dto.resp.ShortLinkCreateRespDTO;
+import com.fran.shortlink.project.dto.resp.ShortLinkPageRespDTO;
 import com.google.protobuf.ServiceException;
 
 /**
@@ -18,4 +21,11 @@ public interface ShortLinkService extends IService<ShortLinkDO> {
      */
     ShortLinkCreateRespDTO createShortUrl(ShortLinkCreateReqDTO requestParam)
         throws ServiceException;
+
+    /**
+     * Query Short Link by Page
+     * @param requestParam params for query short link by page
+     * @return short link query result by page
+     */
+    IPage<ShortLinkPageRespDTO> pageShortLink(ShortLinkPageReqDTO requestParam);
 }

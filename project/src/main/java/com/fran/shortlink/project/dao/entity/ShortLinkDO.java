@@ -33,6 +33,10 @@ public class ShortLinkDO extends BaseDO {
      */
     private String gid;
     /**
+     * Web icon
+     */
+    private String favicon;
+    /**
      * Enable Status: 0 = Disabled, 1 = Enabled
      */
     private Integer enableStatus;
@@ -49,6 +53,10 @@ public class ShortLinkDO extends BaseDO {
      * Expiration Date
      */
     private Date validDate;
+
+    /**
+     * Description
+     */
     private String description;
 
 }
