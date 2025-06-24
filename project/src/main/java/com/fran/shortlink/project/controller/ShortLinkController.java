@@ -26,6 +26,9 @@ public class ShortLinkController {
 
     /**
      * Create Short Link
+     *
+     * @param requestParam params for creating a short link
+     * @return short link creation info
      */
     @PostMapping("/api/short-link/v1/create")
     @SneakyThrows
@@ -37,6 +40,9 @@ public class ShortLinkController {
 
     /**
      * Query Short Link by Page
+     *
+     * @param requestParam params for query short link by page
+     * @return short link query result by page
      */
     @GetMapping("/api/short-link/v1/page")
     public Result<IPage<ShortLinkPageRespDTO>> pageShortLink(ShortLinkPageReqDTO requestParam) {
