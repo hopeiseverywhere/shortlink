@@ -16,7 +16,7 @@ spring:
         # ShardingSphere customizes the Driver to implement hidden logic for database and table sharding
         driver-class-name: org.apache.shardingsphere.driver.ShardingSphereDriver
         # Path to the ShardingSphere configuration file
-        url: jdbc:shardingsphere:classpath:shardingsphere-config.yaml
+        url: jdbc:shardingsphere:classpath:shardingsphere-config-${database.env:env}.yaml
     data:
         redis:
             host: 127.0.0.1
