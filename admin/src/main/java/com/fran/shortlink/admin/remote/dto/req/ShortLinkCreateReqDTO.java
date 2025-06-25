@@ -1,5 +1,6 @@
 package com.fran.shortlink.admin.remote.dto.req;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 import lombok.Data;
 
@@ -29,6 +30,7 @@ public class ShortLinkCreateReqDTO {
     /**
      * Expiration Date
      */
+    @JsonFormat(pattern = "MM-dd-yyyy hh:mm:ss a", timezone = "PST")
     private Date validDate;
     private String description;
 }
