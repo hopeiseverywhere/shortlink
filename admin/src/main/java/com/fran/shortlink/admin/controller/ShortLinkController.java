@@ -33,6 +33,10 @@ public class ShortLinkController {
 
         return shortLinkRemoteService.createShortUrl(requestParam);
     }
+
+
+
+
     /**
      * Query Short Link by Page
      */

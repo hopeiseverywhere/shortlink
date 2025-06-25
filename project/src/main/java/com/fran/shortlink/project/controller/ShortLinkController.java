@@ -5,6 +5,7 @@ import com.fran.shortlink.project.common.convention.result.Result;
 import com.fran.shortlink.project.common.convention.result.Results;
 import com.fran.shortlink.project.dto.req.ShortLinkCreateReqDTO;
 import com.fran.shortlink.project.dto.req.ShortLinkPageReqDTO;
+import com.fran.shortlink.project.dto.req.ShortLinkUpdateReqDTO;
 import com.fran.shortlink.project.dto.resp.ShortLinkCreateRespDTO;
 import com.fran.shortlink.project.dto.resp.ShortLinkGroupCountQueryRespDTO;
 import com.fran.shortlink.project.dto.resp.ShortLinkPageRespDTO;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,6 +52,13 @@ public class ShortLinkController {
     @GetMapping("/api/short-link/v1/page")
     public Result<IPage<ShortLinkPageRespDTO>> pageShortLink(ShortLinkPageReqDTO requestParam) {
         return Results.success(shortLinkService.pageShortLink(requestParam));
+    }
+
+    @PutMapping("/api/short-link/v1/update")
+    public Result<Void> updateShortLink(@RequestBody ShortLinkUpdateReqDTO requestParam) {
+
+        shortLinkService.updateShortLink(requestParam);
+        return Results.success();
     }
 
     /**
