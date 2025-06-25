@@ -91,7 +91,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
                 }
 
                 userRegisterCachePenetrationBloomFilter.add(requestParam.getUsername());
-                groupService.saveGroup("Default Group");
+                groupService.saveGroup(requestParam.getUsername(), "Default Group");
                 return;
             }
             throw new ClientException(UserErrorCodeEnum.USER_NAME_EXIST);

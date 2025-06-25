@@ -14,30 +14,43 @@ public interface GroupService extends IService<GroupDO> {
 
     /**
      * Create a new short link group name
+     *
      * @param groupName the new group name
      */
     void saveGroup(String groupName);
 
     /**
+     * Create a new short link group name
+     *
+     * @param userName  the username
+     * @param groupName the new group name
+     */
+    void saveGroup(String userName, String groupName);
+
+    /**
      * Search user short link group list
+     *
      * @return list of short link group
      */
     List<ShortLinkGroupRespDTO> listGroup();
 
     /**
      * Update short link group
+     *
      * @param requestParam short link group param
      */
     void updateGroup(ShortLinkGroupUpdateReqDTO requestParam);
 
     /**
      * Delete short link group
+     *
      * @param gid short link group id
      */
     void deleteGroup(String gid);
 
     /**
      * Short link group sort order
+     *
      * @param requestParam short link group sort request param
      */
     void sortGroup(List<ShortLinkGroupSortReqDTO> requestParam);
