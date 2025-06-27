@@ -91,12 +91,11 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
         // If we need to switch group (we used gid as sharding key)
         // So we need to delete the old record
 
-        LambdaQueryWrapper<ShortLinkDO> queryWrapper = Wrappers.lambdaQuery(ShortLinkDO.class)
-            .eq(ShortLinkDO::getGid, requestParam.getGid())
-            .eq(ShortLinkDO::getDescription, requestParam.getDescription())
-            .eq(ShortLinkDO::getFullShortUrl, requestParam.getFullShortUrl())
-            .eq(ShortLinkDO::getDelFlag, 0)
-            .eq(ShortLinkDO::getEnableStatus, 0);
+         LambdaQueryWrapper<ShortLinkDO> queryWrapper = Wrappers.lambdaQuery(ShortLinkDO.class)
+                .eq(ShortLinkDO::getGid, requestParam.getGid())
+                .eq(ShortLinkDO::getFullShortUrl, requestParam.getFullShortUrl())
+                .eq(ShortLinkDO::getDelFlag, 0)
+                .eq(ShortLinkDO::getEnableStatus, 0);
 
         ShortLinkDO hasShortLinkDO = baseMapper.selectOne(queryWrapper);
         if (hasShortLinkDO == null) {
