@@ -10,10 +10,13 @@ import com.fran.shortlink.project.dto.resp.ShortLinkCreateRespDTO;
 import com.fran.shortlink.project.dto.resp.ShortLinkGroupCountQueryRespDTO;
 import com.fran.shortlink.project.dto.resp.ShortLinkPageRespDTO;
 import com.fran.shortlink.project.service.ShortLinkService;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +30,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class ShortLinkController {
 
     private final ShortLinkService shortLinkService;
+
+    /**
+     * Short Link Predicting Original Url
+     */
+    @GetMapping("/{short-uri}")
+    public void restoreUrl(@PathVariable("short-uri") String shortUri, ServletRequest request,
+        ServletResponse response) {
+        shortLinkService.restoreUrl(shortUri, request, response);
+    }
 
     /**
      * Create Short Link
@@ -55,6 +67,7 @@ public class ShortLinkController {
 
     /**
      * Update Short Link
+     *
      * @param requestParam params for updating short link
      */
     @PostMapping("/api/short-link/v1/update")

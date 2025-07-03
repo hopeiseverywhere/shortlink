@@ -10,6 +10,8 @@ import com.fran.shortlink.project.dto.resp.ShortLinkCreateRespDTO;
 import com.fran.shortlink.project.dto.resp.ShortLinkGroupCountQueryRespDTO;
 import com.fran.shortlink.project.dto.resp.ShortLinkPageRespDTO;
 import com.google.protobuf.ServiceException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 import java.util.List;
 
 /**
@@ -49,5 +51,11 @@ public interface ShortLinkService extends IService<ShortLinkDO> {
      */
     List<ShortLinkGroupCountQueryRespDTO> listGroupShortLinkCount(List<String> requestParam);
 
-
+    /**
+     * Short Link Redirecting
+     * @param shortUri short link suffix
+     * @param request http request
+     * @param response http response
+     */
+    void restoreUrl(String shortUri, ServletRequest request, ServletResponse response);
 }

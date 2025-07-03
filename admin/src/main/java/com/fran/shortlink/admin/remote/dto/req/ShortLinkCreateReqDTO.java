@@ -10,6 +10,7 @@ import lombok.Data;
 @Data
 public class ShortLinkCreateReqDTO {
 
+    private String domainProtocol;
     private String domain;
 
     private String originUrl;

@@ -12,6 +12,8 @@ import com.fran.shortlink.project.common.convention.exception.ClientException;
 import com.fran.shortlink.project.common.convention.exception.ServiceException;
 import com.fran.shortlink.project.common.enums.ValidDateTypeEnum;
 import com.fran.shortlink.project.dao.entity.ShortLinkDO;
+import com.fran.shortlink.project.dao.entity.ShortLinkGotoDO;
+import com.fran.shortlink.project.dao.mapper.ShortLinkGotoMapper;
 import com.fran.shortlink.project.dao.mapper.ShortLinkMapper;
 import com.fran.shortlink.project.dto.req.ShortLinkCreateReqDTO;
 import com.fran.shortlink.project.dto.req.ShortLinkPageReqDTO;
@@ -21,6 +23,9 @@ import com.fran.shortlink.project.dto.resp.ShortLinkGroupCountQueryRespDTO;
 import com.fran.shortlink.project.dto.resp.ShortLinkPageRespDTO;
 import com.fran.shortlink.project.service.ShortLinkService;
 import com.fran.shortlink.project.toolkit.HashUtil;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -43,6 +48,7 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
 
     private final RBloomFilter<String> shortUriCreateCachePenetrationBloomFilter;
     private final ShortLinkMapper shortLinkMapper;
+    private final ShortLinkGotoMapper shortLinkGotoMapper;
 
     @Override
     @SneakyThrows
@@ -65,8 +71,13 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
             .enableStatus(0)
             .fullShortUrl(fullShortUrl)
             .build();
+        ShortLinkGotoDO shortLinkGotoDO = ShortLinkGotoDO.builder()
+            .fullShortUrl(fullShortUrl)
+            .gid(requestParam.getGid())
+            .build();
         try {
             baseMapper.insert(shortLinkDO);
+            shortLinkGotoMapper.insert(shortLinkGotoDO);
         } catch (DuplicateKeyException ex) {
             LambdaQueryWrapper<ShortLinkDO> queryWrapper = Wrappers.lambdaQuery(ShortLinkDO.class)
                 .eq(ShortLinkDO::getFullShortUrl, fullShortUrl);
@@ -77,9 +88,9 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
             }
         }
         // Add to bloom filter
-        shortUriCreateCachePenetrationBloomFilter.add(shortLinkSuffix);
+        shortUriCreateCachePenetrationBloomFilter.add(fullShortUrl);
         return ShortLinkCreateRespDTO.builder()
-            .fullShortUrl(shortLinkDO.getFullShortUrl())
+            .fullShortUrl(requestParam.getDomainProtocol() + shortLinkDO.getFullShortUrl())
             .originUrl(requestParam.getOriginUrl())
             .gid(requestParam.getGid())
             .build();
@@ -91,11 +102,11 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
         // If we need to switch group (we used gid as sharding key)
         // So we need to delete the old record
 
-         LambdaQueryWrapper<ShortLinkDO> queryWrapper = Wrappers.lambdaQuery(ShortLinkDO.class)
-                .eq(ShortLinkDO::getGid, requestParam.getGid())
-                .eq(ShortLinkDO::getFullShortUrl, requestParam.getFullShortUrl())
-                .eq(ShortLinkDO::getDelFlag, 0)
-                .eq(ShortLinkDO::getEnableStatus, 0);
+        LambdaQueryWrapper<ShortLinkDO> queryWrapper = Wrappers.lambdaQuery(ShortLinkDO.class)
+            .eq(ShortLinkDO::getGid, requestParam.getGid())
+            .eq(ShortLinkDO::getFullShortUrl, requestParam.getFullShortUrl())
+            .eq(ShortLinkDO::getDelFlag, 0)
+            .eq(ShortLinkDO::getEnableStatus, 0);
 
         ShortLinkDO hasShortLinkDO = baseMapper.selectOne(queryWrapper);
         if (hasShortLinkDO == null) {
@@ -164,6 +175,39 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
             .groupBy("gid");
         List<Map<String, Object>> shortLinkDOList = baseMapper.selectMaps(queryWrapper);
         return BeanUtil.copyToList(shortLinkDOList, ShortLinkGroupCountQueryRespDTO.class);
+    }
+
+    @Override
+    @SneakyThrows
+    public void restoreUrl(String shortUri, ServletRequest request,
+        ServletResponse response) {
+        String serverName = request.getServerName();
+        String fullShortUrl = serverName + "/" + shortUri;
+        // Get gid from routing table
+        LambdaUpdateWrapper<ShortLinkGotoDO> shortLinkGotoQueryWrapper = Wrappers.lambdaUpdate(
+                ShortLinkGotoDO.class)
+            .eq(ShortLinkGotoDO::getFullShortUrl, fullShortUrl);
+        ShortLinkGotoDO shortLinkGotoDO = shortLinkGotoMapper.selectOne(shortLinkGotoQueryWrapper);
+        if (shortLinkGotoDO == null) {
+
+            return;
+        }
+
+        LambdaQueryWrapper<ShortLinkDO> queryWrapper = Wrappers.lambdaQuery(ShortLinkDO.class)
+            .eq(ShortLinkDO::getGid, shortLinkGotoDO.getGid())
+            .eq(ShortLinkDO::getFullShortUrl, fullShortUrl)
+            .eq(ShortLinkDO::getDelFlag, 0)
+            .eq(ShortLinkDO::getEnableStatus, 0);
+
+        ShortLinkDO shortLinkDO = baseMapper.selectOne(queryWrapper);
+        if (shortLinkDO != null) {
+            ((HttpServletResponse) response).sendRedirect(shortLinkDO.getOriginUrl());
+        }
+        //// In bloom filter or not
+        //if (shortUriCreateCachePenetrationBloomFilter.contains(fullShortUrl)) {
+        //
+        //}
+        //
     }
 
     @SneakyThrows
